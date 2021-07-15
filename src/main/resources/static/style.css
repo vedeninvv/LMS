@@ -1,0 +1,42 @@
+.center-title {
+    text-align: center;
+    padding-bottom: 3%;
+}
+
+.padding-bottom-block {
+    padding-bottom: 5%;
+}
+
+.right-button {
+    float: right;
+}
+
+.margin-top-button {
+    margin-top: 1%;
+}
+
+.inline {
+    display: inline;
+}
+
+.table-line {
+    font-size: 20pt;
+}
+
+tr {
+    font-size: 13pt;
+}
+
+.validation-error {
+    display: block;
+    color: red;
+}
+
+.all-width {
+    width: 100%;
+    display: block;
+}
+
+.small-padding-bottom-block {
+    padding-bottom: 1%;
+}

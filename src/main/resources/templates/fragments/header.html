@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<header th:fragment="header">
+            <span th:classappend="${activePage == 'courses'} ? active">
+                <a th:href="@{/course}">Courses</a>
+            </span>
+    <span th:classappend="${activePage == 'users'} ? active">
+                <a th:href="@{/user}">User</a>
+            </span>
+</header>
+
+</html>
