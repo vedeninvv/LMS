@@ -51,7 +51,7 @@ public class MemoryBasedCourseRepository implements CourseRepository {
     @Override
     public List<Course> findByTitleWithPrefix(String prefix) {
         return courseMap.values()
-                .stream().filter(course -> course.getTitle().startsWith(prefix))
+                .stream().filter(course -> course.getTitle().toLowerCase().startsWith(prefix.toLowerCase()))
                 .collect(Collectors.toList());
     }
 }
