@@ -30,7 +30,7 @@ public class CourseController {
         return "CoursesList";
     }
 
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public String courseForm(Model model, @PathVariable("id") Long id) {
         model.addAttribute("activePage", "courses");
         model.addAttribute("course", courseLister.courseById(id));

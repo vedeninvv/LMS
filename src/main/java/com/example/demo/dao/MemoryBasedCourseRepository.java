@@ -1,7 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.domain.Course;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 public class MemoryBasedCourseRepository implements CourseRepository {
 
     private final Map<Long, Course> courseMap = new ConcurrentHashMap<>();
