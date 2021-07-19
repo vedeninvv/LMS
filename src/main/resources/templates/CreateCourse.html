@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../static/styles.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <title>Создание курса</title>
 </head>
 <body>
@@ -16,15 +16,22 @@
         <button type="submit" class="btn btn-success right-button margin-top-button">Обновить</button>
     </form>
     <div class="padding-bottom-block">
-        <form>
+        <form th:object="${course}" th:method="post" th:action="@{/course}">
+            <input type="hidden" th:field="*{id}">
             <label for="courseName">Название:</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" id="courseName" placeholder="Название" aria-label="Названию">
+            <div class="small-padding-bottom-block">
+                <input type="text" class="form-control all-width" id="courseName"
+                       placeholder="Название" aria-label="Названию" th:field="*{title}">
+                <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Course title
+                    has to be filled</small>
             </div>
             <label for="author">Автор:</label>
-            <div class="input-group mb-3">
+            <div class="small-padding-bottom-block">
                 <input type="text" class="form-control" id="author" placeholder="Имя"
-                       aria-label="Имя автора">
+                       aria-label="Имя автора" th:field="*{author}">
+                <small class="validation-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Course
+                    author has
+                    to be filled</small>
             </div>
             <button type="submit" class="btn btn-success right-button">Сохранить</button>
         </form>
