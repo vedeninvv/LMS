@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Course;
+import com.example.demo.dto.LessonDto;
 import com.example.demo.service.CourseLister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/course")
@@ -33,7 +35,11 @@ public class CourseController {
     @GetMapping("/{id}")
     public String courseForm(Model model, @PathVariable("id") Long id) {
         model.addAttribute("activePage", "courses");
-        model.addAttribute("course", courseLister.courseById(id));
+        Course course = courseLister.courseById(id);
+        model.addAttribute("course", course);
+        model.addAttribute("lessons", course.getLessons().stream()
+                .map(l -> new LessonDto(l.getId(), l.getTitle(), l.getText(), l.getCourse().getId()))
+                .collect(Collectors.toList()));
         return "CreateCourse";
     }
 

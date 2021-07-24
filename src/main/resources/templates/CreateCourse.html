@@ -36,8 +36,11 @@
             <button type="submit" class="btn btn-success right-button">Сохранить</button>
         </form>
     </div>
-    <div class="padding-bottom-block">
-        <label>Новый урок</label>
+    <div th:if="${lessons != null}" class="padding-bottom-block">
+        <a th:href="@{/course/{id}/lessons/new(id = ${course.id})}">
+            <button type="button" class="btn btn-success btn-bottom-margin">Новый урок</button>
+        </a>
+        <div><label>Уроки:</label></div>
         <table class="table table-striped table-hover">
             <thead>
             <tr>
@@ -47,23 +50,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Course name</td>
+            <tr th:unless="${lessons.isEmpty()}" th:each="lesson : ${lessons}">
+                <th scope="row" th:text="${lesson.id}">1</th>
                 <td>
-                    <form>
+                    <a th:text="${lesson.title}"
+                       th:href="@{/course/{courseId}/lessons/{lessonId}(courseId = ${course.id}, lessonId = ${lesson.id})}">
+                        Lesson name
+                    </a>
+                </td>
+                <td>
+                    <form th:method="delete"
+                          th:action="@{/course/{courseId}/lessons/{lessonId}(courseId = ${course.id}, lessonId = ${lesson.id})}">
                         <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Course name</td>
-                <td>
-                    <form>
-                        <button type="submit" class="btn btn-danger">Удалить</button>
-                    </form>
-                </td>
+            <tr th:if="${course.lessons.isEmpty()}">
+                <td colspan="3">Нет данных</td>
             </tr>
             </tbody>
         </table>
