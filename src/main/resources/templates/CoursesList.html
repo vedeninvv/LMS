@@ -32,7 +32,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="course : ${courses}">
+            <tr th:unless="${courses.isEmpty()}" th:each="course : ${courses}">
                 <th scope="row" th:text="${course.id}">1</th>
                 <td>
                     <a th:text="${course.title}" th:href="@{/course/{id}(id = ${course.id})}">Course name</a>
@@ -46,6 +46,9 @@
                         <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
                 </td>
+            </tr>
+            <tr th:if="${courses.isEmpty()}">
+                <td colspan="4">Нет данных</td>
             </tr>
             </tbody>
         </table>

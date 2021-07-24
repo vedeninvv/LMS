@@ -24,7 +24,7 @@ public class CourseLister {
     }
 
     public List<Course> coursesByTitleWithPrefix(String prefix) {
-        return repository.findByTitleWithPrefix(prefix == null ? "" : prefix);
+        return repository.findByTitleLike(prefix == null ? "%" : prefix + "%");
     }
 
     public Course courseById(long id) {
@@ -36,6 +36,6 @@ public class CourseLister {
     }
 
     public void delete(long id) {
-        repository.delete(id);
+        repository.delete(repository.getById(id));
     }
 }
