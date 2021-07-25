@@ -51,7 +51,7 @@ public class LessonController {
 
     @ExceptionHandler
     public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
-        ModelAndView modelAndView = new ModelAndView("FindCourseException");
+        ModelAndView modelAndView = new ModelAndView("NotFoundException");
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
     }

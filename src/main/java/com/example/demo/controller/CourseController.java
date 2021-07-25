@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Course;
 import com.example.demo.domain.User;
-import com.example.demo.dto.LessonDto;
 import com.example.demo.service.CourseLister;
 import com.example.demo.service.LessonLister;
 import com.example.demo.service.UserLister;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/course")
@@ -78,7 +76,7 @@ public class CourseController {
 
     @ExceptionHandler
     public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
-        ModelAndView modelAndView = new ModelAndView("FindCourseException");
+        ModelAndView modelAndView = new ModelAndView("NotFoundException");
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
     }
