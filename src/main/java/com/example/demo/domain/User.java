@@ -1,12 +1,14 @@
 package com.example.demo.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "users")
@@ -23,4 +25,3 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private Set<Course> courses;
 }
-

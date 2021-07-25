@@ -3,10 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.dto.LessonDto;
 import com.example.demo.service.LessonLister;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -45,5 +47,12 @@ public class LessonController {
     public String deleteLesson(@PathVariable Long courseId, @PathVariable Long lessonId){
         lessonLister.deleteLessonById(lessonId);
         return "redirect:/course/{courseId}";
+    }
+
+    @ExceptionHandler
+    public ModelAndView notFoundExceptionHandler(NotFoundException ex) {
+        ModelAndView modelAndView = new ModelAndView("FindCourseException");
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
+        return modelAndView;
     }
 }

@@ -31,6 +31,10 @@ public class CourseLister {
         return repository.findById(id).orElseThrow(NotFoundException::new);
     }
 
+    public boolean hasCourseById(long id){
+        return repository.findById(id).isPresent();
+    }
+
     public void save(Course course) {
         repository.save(course);
     }

@@ -22,16 +22,17 @@
             <div class="small-padding-bottom-block">
                 <input type="text" class="form-control all-width" id="courseName"
                        placeholder="Название" aria-label="Названию" th:field="*{title}">
-                <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Course title
-                    has to be filled</small>
+                <small class="validation-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                    Course title has to be filled
+                </small>
             </div>
             <label for="author">Автор:</label>
             <div class="small-padding-bottom-block">
                 <input type="text" class="form-control" id="author" placeholder="Имя"
                        aria-label="Имя автора" th:field="*{author}">
-                <small class="validation-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Course
-                    author has
-                    to be filled</small>
+                <small class="validation-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">
+                    Course author has to be filled
+                </small>
             </div>
             <button type="submit" class="btn btn-success right-button">Сохранить</button>
         </form>
@@ -46,7 +47,7 @@
             <tr>
                 <th scope="col">id</th>
                 <th scope="col">Название</th>
-                <th scope="col">Action</th>
+                <th scope="col">Действие</th>
             </tr>
             </thead>
             <tbody>
@@ -71,34 +72,29 @@
             </tbody>
         </table>
     </div>
-    <div class="padding-bottom-block">
+    <div th:if="${users != null}" class="padding-bottom-block">
         <label>Пользователи, связанные с курсом</label>
         <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th scope="col">id</th>
-                <th scope="col">Название</th>
-                <th scope="col">Action</th>
+                <th scope="col">Имя пользователя</th>
+                <th scope="col">Действие</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Course name</td>
+            <tr th:unless="${users.isEmpty()}" th:each="user : ${users}">
+                <th scope="row" th:text="${user.id}">1</th>
+                <td th:text="${user.username}">Username</td>
                 <td>
-                    <form>
+                    <form th:method="post"
+                          th:action="@{/course/{courseId}/take_off/{userId}(courseId = ${course.id}, userId = ${user.id})}">
                         <button type="submit" class="btn btn-danger">Снять с курса</button>
                     </form>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Course name</td>
-                <td>
-                    <form>
-                        <button type="submit" class="btn btn-danger">Снять с курса</button>
-                    </form>
-                </td>
+            <tr th:if="${users.isEmpty()}">
+                <td colspan="3">Нет данных</td>
             </tr>
             </tbody>
         </table>

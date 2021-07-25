@@ -8,6 +8,10 @@
     <title>Список курсов</title>
 </head>
 <body>
+<div th:if="${assignForm == 'show'}">
+    <div th:replace="fragments/assignCourse :: assignCourse"></div>
+</div>
+
 <h1 class="display-1 center-title">Курсы</h1>
 <div class="container-md">
     <div class="padding-bottom-block">
@@ -39,8 +43,8 @@
                 </td>
                 <td th:text="${course.author}">Course author</td>
                 <td>
-                    <form class="inline">
-                        <button type="button" class="btn btn-success">Назначить</button>
+                    <form class="inline" th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">
+                        <button type="submit" class="btn btn-success">Назначить</button>
                     </form>
                     <form th:method="delete" th:action="@{/course/{id}(id = ${course.id})}" class="inline">
                         <button type="submit" class="btn btn-danger">Удалить</button>
