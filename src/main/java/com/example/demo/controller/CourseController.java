@@ -50,7 +50,7 @@ public class CourseController {
         if (bindingResult.hasErrors()) {
             return "CreateCourse";
         }
-        if (courseLister.hasCourseById(course.getId())){
+        if (course.getId() != null && courseLister.hasCourseById(course.getId())){
             Course oldCourse = courseLister.courseById(course.getId());
             oldCourse.setTitle(course.getTitle());
             oldCourse.setAuthor(course.getAuthor());
