@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Course;
 import com.example.demo.domain.User;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.service.CourseLister;
 import com.example.demo.service.LessonLister;
 import com.example.demo.service.UserLister;

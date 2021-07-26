@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.NotFoundException;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
 import org.springframework.beans.factory.annotation.Autowired;
