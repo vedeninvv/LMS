@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="assignCourse">
+    <div class="fixed-top alert alert-success alert-dismissible fade show" role="alert">
+        <div>
+            <h1 class="display-5">Назначить курс</h1>
+            <form th:method="post" th:action="@{/course/{courseId}/assign(courseId = ${courseId})}">
+                <select class="form-select" aria-label="Выбор имени пользователя" name="userId">
+                    <option th:each="user : ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.username}">Имя
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-success right-button margin-top-button">Назначить</button>
+            </form>
+        </div>
+        <a th:href="@{/course}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </a>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.NotFoundException;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +24,15 @@ public class CourseLister {
     }
 
     public List<Course> coursesByTitleWithPrefix(String prefix) {
-        return repository.findByTitleWithPrefix(prefix == null ? "" : prefix);
+        return repository.findByTitleLike(prefix == null ? "%" : prefix + "%");
     }
 
     public Course courseById(long id) {
         return repository.findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    public boolean hasCourseById(long id){
+        return repository.findById(id).isPresent();
     }
 
     public void save(Course course) {
@@ -36,6 +40,6 @@ public class CourseLister {
     }
 
     public void delete(long id) {
-        repository.delete(id);
+        repository.delete(repository.getById(id));
     }
 }
