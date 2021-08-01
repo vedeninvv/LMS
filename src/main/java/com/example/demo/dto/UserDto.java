@@ -1,9 +1,10 @@
-package com.example.demo.domain;
+package com.example.demo.dto;
 
+import com.example.demo.domain.Course;
+import com.example.demo.domain.Role;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.HashSet;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Getter
@@ -11,24 +12,18 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
-@Table(name = "users")
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column
+    @NotBlank
     private String username;
 
-    @Column
+    @NotBlank
     private String password;
 
-    @ManyToMany(mappedBy = "users")
     private Set<Course> courses;
 
-    @ManyToMany
     private Set<Role> roles;
 }

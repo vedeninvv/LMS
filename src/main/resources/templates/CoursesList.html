@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -8,6 +9,7 @@
     <title>Список курсов</title>
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
 <div th:if="${assignForm == 'show'}">
     <div th:replace="fragments/assignCourse :: assignCourse"></div>
 </div>
@@ -23,7 +25,7 @@
         </form>
     </div>
     <div class="padding-bottom-block">
-        <a th:href="@{course/new}">
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{course/new}">
             <button type="button" class="btn btn-success btn-bottom-margin">Добавить новый курс</button>
         </a>
         <table class="table table-striped table-hover">
@@ -46,7 +48,8 @@
                     <form class="inline" th:method="get" th:action="@{/course/{id}/assign(id = ${course.id})}">
                         <button type="submit" class="btn btn-success">Назначить</button>
                     </form>
-                    <form th:method="delete" th:action="@{/course/{id}(id = ${course.id})}" class="inline">
+                    <form sec:authorize="hasRole('ADMIN')" th:method="delete"
+                          th:action="@{/course/{id}(id = ${course.id})}" class="inline">
                         <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
                 </td>
