@@ -44,3 +44,22 @@ tr {
 .btn-bottom-margin {
     margin-bottom: 1%;
 }
+
+header {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+}
+
+header > span {
+    display: inline-block;
+    min-width: 150px;
+}
+
+.float-right {
+    float: right;
+}
+
+.active {
+    font-weight: bold;
+}
