@@ -5,11 +5,11 @@ import com.example.demo.domain.Course;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.exceptions.UsernameExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,17 +51,23 @@ public class UserService {
 
     public void deleteById(long id) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
-        for (var course : user.getCourses()){
+        for (var course : user.getCourses()) {
             takeOffCourse(id, course.getId());
         }
         userRepository.deleteById(id);
     }
 
     public void save(UserDto userDto) {
+        if (userRepository.findUserByUsername(userDto.getUsername()).isPresent()) {
+            throw new UsernameExistException();
+        }
         userRepository.save(toUser(userDto));
     }
 
-    public UserDto updateUsernameAndPassword(UserDto userDto){
+    public UserDto updateUsernameAndPassword(UserDto userDto) {
+        if (userRepository.findUserByUsername(userDto.getUsername()).isPresent()) {
+            throw new UsernameExistException();
+        }
         User user = userRepository.findById(userDto.getId()).orElseThrow(NotFoundException::new);
         user.setUsername(userDto.getUsername());
         user.setPassword(encoder.encode(userDto.getPassword()));
@@ -70,7 +76,10 @@ public class UserService {
         return userDto;
     }
 
-    public void updateUsernameAndPasswordAndRoles(UserDto userDto){
+    public void updateUsernameAndPasswordAndRoles(UserDto userDto) {
+        if (userRepository.findUserByUsername(userDto.getUsername()).isPresent()) {
+            throw new UsernameExistException();
+        }
         User user = userRepository.findById(userDto.getId()).orElseThrow(NotFoundException::new);
         user.setUsername(userDto.getUsername());
         user.setPassword(encoder.encode(userDto.getPassword()));
@@ -86,7 +95,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void takeOffCourse(Long userId, Long courseId){
+    public void takeOffCourse(Long userId, Long courseId) {
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         Course course = courseService.courseById(courseId);
         user.getCourses().remove(course);

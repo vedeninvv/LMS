@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Role;
 import com.example.demo.dto.UserDto;
+import com.example.demo.exceptions.UsernameExistException;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class AdminController {
 
     @GetMapping
     public String adminPanel(Model model) {
+        model.addAttribute("username", "notExist");
         model.addAttribute("userDto", new UserDto());
         model.addAttribute("roles", roleService.findAll());
         model.addAttribute("allUsers", userService.findAll());
@@ -84,5 +86,14 @@ public class AdminController {
     public String takeOffUserFromCourse(@PathVariable Long userId, @PathVariable Long courseId){
         userService.takeOffCourse(userId, courseId);
         return "redirect:/admin/user/{userId}";
+    }
+
+    @ExceptionHandler
+    public String usernameExistExceptionHandler(UsernameExistException ex, Model model){
+        model.addAttribute("username", "exist");
+        model.addAttribute("userDto", new UserDto());
+        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("allUsers", userService.findAll());
+        return "AdminPanel";
     }
 }

@@ -6,6 +6,7 @@ import com.example.demo.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -15,6 +16,8 @@ public class RoleService {
     @Autowired
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+        roleRepository.save(new Role(1, "ROLE_ADMIN", new HashSet<>()));
+        roleRepository.save(new Role(2, "ROLE_STUDENT", new HashSet<>()));
     }
 
     public Role findRoleByName(String name){
