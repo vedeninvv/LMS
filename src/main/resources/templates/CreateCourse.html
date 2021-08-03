@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -8,9 +9,11 @@
     <title>Создание курса</title>
 </head>
 <body>
-<h1 class="display-1 center-title">Создать курс</h1>
+<header th:replace="fragments/header :: header"></header>
+<h1 sec:authorize="hasRole('ADMIN')" class="display-1 center-title">Создать курс</h1>
+<h1 sec:authorize="!hasRole('ADMIN')" class="display-1 center-title">Курс</h1>
 <div class="container-md">
-    <form class="mb-3 padding-bottom-block">
+    <form sec:authorize="hasRole('ADMIN')" class="mb-3 padding-bottom-block">
         <label for="courseImg" class="form-label">Выберите обложку курса:</label>
         <input class="form-control" type="file" id="courseImg">
         <button type="submit" class="btn btn-success right-button margin-top-button">Обновить</button>
@@ -34,11 +37,12 @@
                     Course author has to be filled
                 </small>
             </div>
-            <button type="submit" class="btn btn-success right-button">Сохранить</button>
+            <button sec:authorize="hasRole('ADMIN')" type="submit" class="btn btn-success right-button">Сохранить
+            </button>
         </form>
     </div>
     <div th:if="${lessons != null}" class="padding-bottom-block">
-        <a th:href="@{/course/{id}/lessons/new(id = ${course.id})}">
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/course/{id}/lessons/new(id = ${course.id})}">
             <button type="button" class="btn btn-success btn-bottom-margin">Новый урок</button>
         </a>
         <div><label>Уроки:</label></div>
@@ -60,7 +64,7 @@
                     </a>
                 </td>
                 <td>
-                    <form th:method="delete"
+                    <form sec:authorize="hasRole('ADMIN')" th:method="delete"
                           th:action="@{/course/{courseId}/lessons/{lessonId}(courseId = ${course.id}, lessonId = ${lesson.id})}">
                         <button type="submit" class="btn btn-danger">Удалить</button>
                     </form>
@@ -72,7 +76,7 @@
             </tbody>
         </table>
     </div>
-    <div th:if="${users != null}" class="padding-bottom-block">
+    <div sec:authorize="hasRole('ADMIN')" th:if="${users != null}" class="padding-bottom-block">
         <label>Пользователи, связанные с курсом</label>
         <table class="table table-striped table-hover">
             <thead>

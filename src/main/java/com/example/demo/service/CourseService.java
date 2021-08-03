@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.UserDto;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.domain.Course;
@@ -10,11 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CourseLister {
+public class CourseService {
     private final CourseRepository repository;
 
     @Autowired
-    public CourseLister(CourseRepository repository) {
+    public CourseService(CourseRepository repository) {
         this.repository = repository;
     }
 

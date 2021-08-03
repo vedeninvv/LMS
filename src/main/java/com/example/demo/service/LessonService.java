@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LessonLister {
+public class LessonService {
     private final LessonRepository lessonRepository;
     private final CourseRepository courseRepository;
 
     @Autowired
-    public LessonLister(LessonRepository lessonRepository, CourseRepository courseRepository) {
+    public LessonService(LessonRepository lessonRepository, CourseRepository courseRepository) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
     }
