@@ -3,9 +3,9 @@ package com.example.demo.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor

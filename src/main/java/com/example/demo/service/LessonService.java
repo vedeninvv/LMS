@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.dao.CourseRepository;
 import com.example.demo.dao.LessonRepository;
 import com.example.demo.domain.Course;
 import com.example.demo.domain.Lesson;
 import com.example.demo.dto.LessonDto;
+import com.example.demo.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class LessonService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    public void save(LessonDto lessonDto) {
+    public LessonDto save(LessonDto lessonDto) {
         Course course = courseRepository.getById(lessonDto.getCourseId());
         Lesson lesson = new Lesson(
                 lessonDto.getId(),
@@ -35,7 +35,13 @@ public class LessonService {
                 lessonDto.getText(),
                 course
         );
-        lessonRepository.save(lesson);
+        lesson = lessonRepository.save(lesson);
+        return new LessonDto(
+                lesson.getId(),
+                lesson.getTitle(),
+                lesson.getText(),
+                lesson.getCourse().getId()
+        );
     }
 
     public void deleteLessonById(Long id) {
