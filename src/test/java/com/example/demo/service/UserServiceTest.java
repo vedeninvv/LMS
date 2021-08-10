@@ -27,8 +27,17 @@ public class UserServiceTest {
     @Test
     void usersNotAssignedToCourseTest() {
         final Long notExistingCourseId = 2L;
-        final Course course = new Course(1L, "author", "title", null, null);
-        final User user = new User(1L, "username", "password", Set.of(course), null);
+        final Course course = Course.builder()
+                .id(1L)
+                .author("author")
+                .title("title")
+                .build();
+        final User user = User.builder()
+                .id(1L)
+                .username("username")
+                .password("password")
+                .courses(Set.of(course))
+                .build();
         course.setUsers(Set.of(user));
         List<UserDto> userDtoList = List.of(new UserDto(1L, "username", "", Set.of(course), null));
         Mockito.when(userRepositoryMock.findUsersNotAssignedToCourse(notExistingCourseId)).thenReturn(List.of(user));
@@ -40,9 +49,23 @@ public class UserServiceTest {
 
     @Test
     void usersAssignedToCourseTest() {
-        Course course = new Course(1L, "author", "title", null, null);
-        User firstUser = new User(1L, "username", "password", Set.of(course), null);
-        User secondUser = new User(2L, "username2", "password2", Set.of(course), null);
+        Course course = Course.builder()
+                .id(1L)
+                .author("author")
+                .title("title")
+                .build();
+        User firstUser = User.builder()
+                .id(1L)
+                .username("username")
+                .password("password")
+                .courses(Set.of(course))
+                .build();
+        User secondUser = User.builder()
+                .id(2L)
+                .username("username2")
+                .password("password2")
+                .courses(Set.of(course))
+                .build();
         course.setUsers(Set.of(firstUser));
         List<UserDto> userDtoList = List.of(
                 new UserDto(1L, "username", "", Set.of(course), null),

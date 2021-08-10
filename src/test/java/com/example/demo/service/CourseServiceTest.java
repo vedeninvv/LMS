@@ -16,10 +16,22 @@ public class CourseServiceTest {
 
     @Test
     void courseByExistingAuthorTest() {
-        final Course courseByJack = new Course(1L, "Jack", null, null, null);
-        final Course firstCourseByArtur = new Course(2L, "Artur", null, null, null);
-        final Course secondCourseByArtur = new Course(3L, "Artur", null, null, null);
-        final Course courseByDenis = new Course(4L, "Denis", null, null, null);
+        final Course courseByJack = Course.builder()
+                .id(1L)
+                .author("Jack")
+                .build();
+        final Course firstCourseByArtur = Course.builder()
+                .id(2L)
+                .author("Artur")
+                .build();
+        final Course secondCourseByArtur = Course.builder()
+                .id(3L)
+                .author("Artur")
+                .build();
+        final Course courseByDenis = Course.builder()
+                .id(4L)
+                .author("Denis")
+                .build();
         Mockito.when(courseRepositoryMock.findAll())
                 .thenReturn(List.of(firstCourseByArtur, secondCourseByArtur, courseByJack, courseByDenis));
 
@@ -32,11 +44,26 @@ public class CourseServiceTest {
 
     @Test
     void severalCoursesByExistingAuthorTest() {
-        final Course firstCourseByJack = new Course(1L, "Jack", null, null, null);
-        final Course courseByArtur = new Course(2L, "Artur", null, null, null);
-        final Course secondCourseByJack = new Course(3L, "Jack", null, null, null);
-        final Course courseByDenis = new Course(4L, "Denis", null, null, null);
-        final Course thirdCourseByJack = new Course(5L, "Jack", null, null, null);
+        final Course firstCourseByJack = Course.builder()
+                .id(1L)
+                .author("Jack")
+                .build();
+        final Course courseByArtur = Course.builder()
+                .id(2L)
+                .author("Artur")
+                .build();
+        final Course secondCourseByJack = Course.builder()
+                .id(3L)
+                .author("Jack")
+                .build();
+        final Course courseByDenis = Course.builder()
+                .id(4L)
+                .author("Denis")
+                .build();
+        final Course thirdCourseByJack = Course.builder()
+                .id(5L)
+                .author("Jack")
+                .build();
         Mockito.when(courseRepositoryMock.findAll()).thenReturn(List.of(courseByArtur, firstCourseByJack, courseByDenis,
                 secondCourseByJack, thirdCourseByJack));
 
@@ -59,10 +86,22 @@ public class CourseServiceTest {
 
     @Test
     void coursesByTitleWithPrefixTest() {
-        final Course courseByJack = new Course(1L, null, "CourseByJack", null, null);
-        final Course firstCourseByArtur = new Course(2L, null, "CourseByArtur1", null, null);
-        final Course secondCourseByArtur = new Course(3L, null, "CourseByArtur2", null, null);
-        final Course courseByDenis = new Course(4L, null, "CourseByDenis", null, null);
+        final Course courseByJack = Course.builder()
+                .id(1L)
+                .title("CourseByJack")
+                .build();
+        final Course firstCourseByArtur = Course.builder()
+                .id(2L)
+                .title("CourseByArtur1")
+                .build();
+        final Course secondCourseByArtur = Course.builder()
+                .id(3L)
+                .title("CourseByArtur2")
+                .build();
+        final Course courseByDenis = Course.builder()
+                .id(4L)
+                .title("CourseByDenis")
+                .build();
         Mockito.when(courseRepositoryMock.findByTitleLike("CourseByJack%")).thenReturn(List.of(courseByJack));
         Mockito.when(courseRepositoryMock.findByTitleLike("CourseByArtur%"))
                 .thenReturn(List.of(firstCourseByArtur, secondCourseByArtur));
@@ -92,7 +131,7 @@ public class CourseServiceTest {
     void courseByIdWhenCourseExistTest() {
         final Long existingId = 5L;
         final Long notExistingId = 404L;
-        final Course course = new Course(existingId, null, null, null, null);
+        final Course course = Course.builder().id(existingId).build();
         Mockito.when(courseRepositoryMock.findById(existingId)).thenReturn(Optional.of(course));
         Mockito.when(courseRepositoryMock.findById(Mockito.argThat(arg -> !arg.equals(existingId))))
                 .thenReturn(Optional.empty());
@@ -104,7 +143,7 @@ public class CourseServiceTest {
     void courseByIdWhenCourseNotExistTest() {
         final Long existingId = 5L;
         final Long notExistingId = 404L;
-        final Course course = new Course(existingId, null, null, null, null);
+        final Course course = Course.builder().id(existingId).build();
         Mockito.when(courseRepositoryMock.findById(existingId)).thenReturn(Optional.of(course));
         Mockito.when(courseRepositoryMock.findById(Mockito.argThat(arg -> !arg.equals(existingId))))
                 .thenReturn(Optional.empty());
