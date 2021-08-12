@@ -6,8 +6,6 @@ import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.LessonService;
 import com.example.demo.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,8 +25,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-    private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
-
     private final CourseService courseService;
     private final UserService userService;
     private final LessonService lessonService;
@@ -47,10 +42,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public String courseTable(Model model, @RequestParam(name = "titlePrefix", required = false) String titlePrefix, Principal principal) {
-        if (principal != null) {
-            logger.info("Request from user '{}'", principal.getName());
-        }
+    public String courseTable(Model model, @RequestParam(name = "titlePrefix", required = false) String titlePrefix) {
         model.addAttribute("courses", courseService.coursesByTitleWithPrefix(titlePrefix));
         return "CoursesList";
     }
