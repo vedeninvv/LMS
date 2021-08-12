@@ -22,7 +22,10 @@
                        aria-label="Имя пользователя"
                        th:field="*{username}">
                 <small class="validation-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
-                    Username has to be filled
+                    Имя пользователя должно быть заполнено
+                </small>
+                <small class="validation-error" th:if="${username == 'exist'}">
+                    Данное имя пользователя уже существует
                 </small>
             </div>
             <label for="password">Пароль:</label>
@@ -30,7 +33,7 @@
                 <input type="password" class="form-control all-width" id="password" placeholder="Пароль"
                        aria-label="Пароль" th:field="*{password}">
                 <small class="validation-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
-                    Username has to be filled
+                    Имя пользователя должно быть заполнено
                 </small>
             </div>
             <div class="small-padding-bottom-block">

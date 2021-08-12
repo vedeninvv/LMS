@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.domain.Role;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.exceptions.UsernameExistException;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.Registration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -71,6 +73,7 @@ public class UserController {
     @GetMapping("/new")
     public String newUserForm(Model model) {
         model.addAttribute("userDto", new UserDto());
+        model.addAttribute("username", "notExist");
         return "RegistrationForm";
     }
 
@@ -100,5 +103,12 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("NotFoundException");
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
+    }
+
+    @ExceptionHandler
+    public String usernameExistExceptionHandler(UsernameExistException ex, Model model){
+        model.addAttribute("username", "exist");
+        model.addAttribute("userDto", new UserDto());
+        return "RegistrationForm";
     }
 }
