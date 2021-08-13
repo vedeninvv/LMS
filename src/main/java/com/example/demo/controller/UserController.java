@@ -6,6 +6,8 @@ import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.UsernameExistException;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.Registration;
@@ -28,6 +31,8 @@ import java.util.Set;
 public class UserController {
     private final UserService userService;
     private final RoleService roleService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService, RoleService roleService) {
@@ -95,6 +100,13 @@ public class UserController {
     public String leaveCourse(@PathVariable Long courseId, Principal principal) {
         UserDto userDto = userService.findByUsername(principal.getName());
         userService.takeOffCourse(userDto.getId(), courseId);
+        return "redirect:/user";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/avatar")
+    public String updateAvatarImage(@RequestParam("avatar") MultipartFile avatar){
+        logger.info("File name {}, file content type {}, file size {}",avatar.getOriginalFilename(),avatar.getContentType(),avatar.getSize());
         return "redirect:/user";
     }
 

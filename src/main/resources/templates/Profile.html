@@ -67,9 +67,9 @@
             <button type="submit" class="btn btn-success right-button margin-top-button">Сохранить</button>
         </form>
     </div>
-    <form class="mb-3 padding-bottom-block">
-        <label for="avatarFile" class="form-label">Для изменения аватара:</label>
-        <input class="form-control" type="file" id="avatarFile">
+    <form th:method="post" th:action="@{/user/avatar}" enctype="multipart/form-data" class="mb-3 padding-bottom-block">
+        <label for="avatar" class="form-label">Для изменения аватара:</label>
+        <input class="form-control" type="file" id="avatar" name="avatar">
         <button type="submit" class="btn btn-success right-button margin-top-button">Обновить</button>
     </form>
 
