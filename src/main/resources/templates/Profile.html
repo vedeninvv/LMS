@@ -12,7 +12,7 @@
 <header th:replace="fragments/header :: header"></header>
 <h1 class="display-1 center-title">Профиль</h1>
 <div class="container-md">
-    <img src="" class="padding-bottom-block" alt="Аватар">
+    <img th:src="@{/user/avatar}" class="padding-bottom-block" alt="Аватар" width="200">
     <div class="padding-bottom-block">
 
         <form sec:authorize="!hasRole('ADMIN')" th:object="${userDto}" th:method="post" th:action="@{/user}">

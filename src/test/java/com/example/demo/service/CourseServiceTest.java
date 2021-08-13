@@ -74,10 +74,22 @@ public class CourseServiceTest {
 
     @Test
     void coursesByNotExistingAuthorTest() {
-        final Course courseByJack = new Course(1L, "Jack", null, null, null);
-        final Course firstCourseByArtur = new Course(2L, "Artur", null, null, null);
-        final Course secondCourseByArtur = new Course(3L, "Artur", null, null, null);
-        final Course courseByDenis = new Course(4L, "Denis", null, null, null);
+        final Course courseByJack = Course.builder()
+                .id(1L)
+                .author("Jack")
+                .build();
+        final Course firstCourseByArtur = Course.builder()
+                .id(2L)
+                .author("Artur")
+                .build();
+        final Course secondCourseByArtur = Course.builder()
+                .id(3L)
+                .author("Artur")
+                .build();
+        final Course courseByDenis = Course.builder()
+                .id(4L)
+                .author("Denis")
+                .build();
         Mockito.when(courseRepositoryMock.findAll())
                 .thenReturn(List.of(firstCourseByArtur, secondCourseByArtur, courseByJack, courseByDenis));
 

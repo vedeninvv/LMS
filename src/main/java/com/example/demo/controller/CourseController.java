@@ -2,18 +2,26 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Course;
 import com.example.demo.dto.UserDto;
+import com.example.demo.exceptions.InternalServerError;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.service.CourseCoverService;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.LessonService;
 import com.example.demo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +36,17 @@ public class CourseController {
     private final CourseService courseService;
     private final UserService userService;
     private final LessonService lessonService;
+    private final CourseCoverService courseCoverService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public CourseController(CourseService courseService, UserService userService, LessonService lessonService) {
+    public CourseController(CourseService courseService, UserService userService,
+                            LessonService lessonService, CourseCoverService courseCoverService) {
         this.courseService = courseService;
         this.userService = userService;
         this.lessonService = lessonService;
+        this.courseCoverService = courseCoverService;
     }
 
     @ModelAttribute("activePage")
@@ -138,5 +151,32 @@ public class CourseController {
             userService.takeOffCourse(userId, courseId);
         }
         return "redirect:/course/{courseId}";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{id}/cover")
+    public String updateAvatarImage(@RequestParam("cover") MultipartFile cover, @PathVariable Long id) {
+        logger.info("File name {}, file content type {}, file size {}", cover.getOriginalFilename(),
+                cover.getContentType(), cover.getSize());
+        try {
+            courseCoverService.save(id, cover.getContentType(), cover.getInputStream());
+        } catch (Exception ex) {
+            logger.info("", ex);
+            throw new InternalServerError();
+        }
+        return "redirect:/course/{id}";
+    }
+
+    @GetMapping("/{id}/cover")
+    @ResponseBody
+    public ResponseEntity<byte[]> coverImage(@PathVariable Long id) {
+        String contentType = courseCoverService.getContentTypeByCourseId(id)
+                .orElseThrow(NotFoundException::new);
+        byte[] data = courseCoverService.getCourseCoverImageByCourseId(id)
+                .orElseThrow(NotFoundException::new);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(data);
     }
 }

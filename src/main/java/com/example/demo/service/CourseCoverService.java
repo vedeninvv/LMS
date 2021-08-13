@@ -1,9 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.AvatarImageRepository;
+import com.example.demo.dao.CourseCoverRepository;
+import com.example.demo.dao.CourseRepository;
 import com.example.demo.dao.UserRepository;
 import com.example.demo.domain.AvatarImage;
+import com.example.demo.domain.Course;
+import com.example.demo.domain.CourseCover;
 import com.example.demo.domain.User;
+import com.example.demo.exceptions.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,39 +27,36 @@ import java.util.UUID;
 import static java.nio.file.StandardOpenOption.*;
 
 @Service
-public class AvatarStorageService {
-
+public class CourseCoverService {
     private static final Logger logger = LoggerFactory.getLogger(AvatarStorageService.class);
 
-    private final AvatarImageRepository avatarImageRepository;
-
-    private final UserRepository userRepository;
+    private final CourseCoverRepository courseCoverRepository;
+    private final CourseRepository courseRepository;
 
     @Value("${file.storage.path}")
     private String path;
 
     @Autowired
-    public AvatarStorageService(AvatarImageRepository avatarImageRepository, UserRepository userRepository) {
-        this.avatarImageRepository = avatarImageRepository;
-        this.userRepository = userRepository;
+    public CourseCoverService(CourseCoverRepository courseCoverRepository, CourseRepository courseRepository) {
+        this.courseCoverRepository = courseCoverRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Transactional
-    public void save(String username, String contentType, InputStream is) {
-        Optional<AvatarImage> opt = avatarImageRepository.findByUsername(username);
-        AvatarImage avatarImage;
+    public void save(Long courseId, String contentType, InputStream is) {
+        Course course = courseRepository.findById(courseId).orElseThrow(NotFoundException::new);
+        Optional<CourseCover> opt = courseCoverRepository.findByCourse(course);
+        CourseCover courseCover;
         String filename;
         if (opt.isEmpty()) {
             filename = UUID.randomUUID().toString();
-            User user = userRepository.findUserByUsername(username)
-                    .orElseThrow(IllegalArgumentException::new);
-            avatarImage = new AvatarImage(null, contentType, filename, user);
+            courseCover = new CourseCover(null, contentType, filename, course);
         } else {
-            avatarImage = opt.get();
-            filename = avatarImage.getFilename();
-            avatarImage.setContentType(contentType);
+            courseCover = opt.get();
+            filename = courseCover.getFilename();
+            courseCover.setContentType(contentType);
         }
-        avatarImageRepository.save(avatarImage);
+        courseCoverRepository.save(courseCover);
 
         try (OutputStream os = Files.newOutputStream(Path.of(path, filename), CREATE, WRITE, TRUNCATE_EXISTING)) {
             is.transferTo(os);
@@ -64,14 +66,16 @@ public class AvatarStorageService {
         }
     }
 
-    public Optional<String> getContentTypeByUser(String username) {
-        return avatarImageRepository.findByUsername(username)
-                .map(AvatarImage::getContentType);
+    public Optional<String> getContentTypeByCourseId(Long courseID) {
+        Course course = courseRepository.findById(courseID).orElseThrow(NotFoundException::new);
+        return courseCoverRepository.findByCourse(course)
+                .map(CourseCover::getContentType);
     }
 
-    public Optional<byte[]> getAvatarImageByUser(String username) {
-        return avatarImageRepository.findByUsername(username)
-                .map(AvatarImage::getFilename)
+    public Optional<byte[]> getCourseCoverImageByCourseId(Long courseID) {
+        Course course = courseRepository.findById(courseID).orElseThrow(NotFoundException::new);
+        return courseCoverRepository.findByCourse(course)
+                .map(CourseCover::getFilename)
                 .map(filename -> {
                     try {
                         return Files.readAllBytes(Path.of(path, filename));

@@ -12,8 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "avatar_images")
-public class AvatarImage {
+@Table(name = "course_cover")
+public class CourseCover {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +26,5 @@ public class AvatarImage {
     private String filename;
 
     @OneToOne
-    private User user;
+    private Course course;
 }

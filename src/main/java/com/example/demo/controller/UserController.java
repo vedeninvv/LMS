@@ -2,15 +2,21 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Role;
 import com.example.demo.dto.UserDto;
+import com.example.demo.exceptions.InternalServerError;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.UsernameExistException;
+import com.example.demo.service.AvatarStorageService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,13 +37,15 @@ import java.util.Set;
 public class UserController {
     private final UserService userService;
     private final RoleService roleService;
+    private final AvatarStorageService avatarStorageService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService, AvatarStorageService avatarStorageService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.avatarStorageService = avatarStorageService;
     }
 
     @ModelAttribute("activePage")
@@ -103,11 +111,32 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @Secured("ROLE_ADMIN")
     @PostMapping("/avatar")
-    public String updateAvatarImage(@RequestParam("avatar") MultipartFile avatar){
-        logger.info("File name {}, file content type {}, file size {}",avatar.getOriginalFilename(),avatar.getContentType(),avatar.getSize());
+    public String updateAvatarImage(Authentication auth,
+                                    @RequestParam("avatar") MultipartFile avatar) {
+        logger.info("File name {}, file content type {}, file size {}", avatar.getOriginalFilename(),
+                avatar.getContentType(), avatar.getSize());
+        try {
+            avatarStorageService.save(auth.getName(), avatar.getContentType(), avatar.getInputStream());
+        } catch (Exception ex) {
+            logger.info("", ex);
+            throw new InternalServerError();
+        }
         return "redirect:/user";
+    }
+
+    @GetMapping("/avatar")
+    @ResponseBody
+    public ResponseEntity<byte[]> avatarImage(Authentication auth) {
+        String contentType = avatarStorageService.getContentTypeByUser(auth.getName())
+                .orElseThrow(NotFoundException::new);
+        byte[] data = avatarStorageService.getAvatarImageByUser(auth.getName())
+                .orElseThrow(NotFoundException::new);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(data);
     }
 
     @ExceptionHandler
