@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Storage ###
-/storage/
+/src/main/resources/storage/*
