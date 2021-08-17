@@ -31,4 +31,7 @@ public class User {
 
     @ManyToMany
     private Set<Role> roles;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private AvatarImage avatarImage;
 }

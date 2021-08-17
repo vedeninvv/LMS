@@ -13,11 +13,16 @@
 <h1 sec:authorize="hasRole('ADMIN')" class="display-1 center-title">Создать курс</h1>
 <h1 sec:authorize="!hasRole('ADMIN')" class="display-1 center-title">Курс</h1>
 <div class="container-md">
-    <form sec:authorize="hasRole('ADMIN')" class="mb-3 padding-bottom-block">
-        <label for="courseImg" class="form-label">Выберите обложку курса:</label>
-        <input class="form-control" type="file" id="courseImg">
-        <button type="submit" class="btn btn-success right-button margin-top-button">Обновить</button>
-    </form>
+    <div th:if="${course.id != null}">
+        <img th:src="@{/course/{id}/cover(id = ${course.id})}"
+             class="padding-bottom-block" alt="Обложка" width="200">
+        <form sec:authorize="hasRole('ADMIN')" class="mb-3 padding-bottom-block"
+              th:method="post" th:action="@{/course/{id}/cover(id = ${course.id})}" enctype="multipart/form-data">
+            <label for="courseImg" class="form-label">Выберите обложку курса:</label>
+            <input class="form-control" type="file" id="courseImg" name="cover">
+            <button type="submit" class="btn btn-success right-button margin-top-button">Обновить</button>
+        </form>
+    </div>
     <div class="padding-bottom-block">
         <form th:object="${course}" th:method="post" th:action="@{/course}">
             <input type="hidden" th:field="*{id}">

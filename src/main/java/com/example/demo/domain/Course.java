@@ -35,4 +35,7 @@ public class Course {
 
     @ManyToMany
     private Set<User> users;
+
+    @OneToOne(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private CourseCover courseCover;
 }
