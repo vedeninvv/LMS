@@ -12,7 +12,7 @@
 <header th:replace="fragments/header :: header"></header>
 <h1 class="display-1 center-title">Профиль</h1>
 <div class="container-md">
-    <img src="" class="padding-bottom-block" alt="Аватар">
+    <img th:src="@{/user/avatar}" class="padding-bottom-block" alt="Аватар" width="200">
     <div class="padding-bottom-block">
 
         <form sec:authorize="!hasRole('ADMIN')" th:object="${userDto}" th:method="post" th:action="@{/user}">
@@ -67,9 +67,9 @@
             <button type="submit" class="btn btn-success right-button margin-top-button">Сохранить</button>
         </form>
     </div>
-    <form class="mb-3 padding-bottom-block">
-        <label for="avatarFile" class="form-label">Для изменения аватара:</label>
-        <input class="form-control" type="file" id="avatarFile">
+    <form th:method="post" th:action="@{/user/avatar}" enctype="multipart/form-data" class="mb-3 padding-bottom-block">
+        <label for="avatar" class="form-label">Для изменения аватара:</label>
+        <input class="form-control" type="file" id="avatar" name="avatar">
         <button type="submit" class="btn btn-success right-button margin-top-button">Обновить</button>
     </form>
 

@@ -114,7 +114,8 @@ public class UserService {
                 user.getUsername(),
                 "",
                 user.getCourses(),
-                user.getRoles()
+                user.getRoles(),
+                user.getAvatarImage()
         );
     }
 
@@ -124,7 +125,8 @@ public class UserService {
                 userDto.getUsername(),
                 encoder.encode(userDto.getPassword()),
                 userDto.getCourses(),
-                userDto.getRoles()
+                userDto.getRoles(),
+                userDto.getAvatarImage()
         );
     }
 

@@ -39,7 +39,7 @@ public class UserServiceTest {
                 .courses(Set.of(course))
                 .build();
         course.setUsers(Set.of(user));
-        List<UserDto> userDtoList = List.of(new UserDto(1L, "username", "", Set.of(course), null));
+        List<UserDto> userDtoList = List.of(new UserDto(1L, "username", "", Set.of(course), null, null));
         Mockito.when(userRepositoryMock.findUsersNotAssignedToCourse(notExistingCourseId)).thenReturn(List.of(user));
 
         Assertions.assertEquals(List.of(), userService.usersNotAssignedToCourse(course.getId()));
@@ -68,8 +68,8 @@ public class UserServiceTest {
                 .build();
         course.setUsers(Set.of(firstUser));
         List<UserDto> userDtoList = List.of(
-                new UserDto(1L, "username", "", Set.of(course), null),
-                new UserDto(2L, "username", "", Set.of(course), null));
+                new UserDto(1L, "username", "", Set.of(course), null, null),
+                new UserDto(2L, "username", "", Set.of(course), null, null));
         Mockito.when(userRepositoryMock.findUsersAssignedToCourse(1L)).thenReturn(List.of(firstUser, secondUser));
 
         Assertions.assertEquals(userDtoList, userService.usersAssignedToCourse(course.getId()));

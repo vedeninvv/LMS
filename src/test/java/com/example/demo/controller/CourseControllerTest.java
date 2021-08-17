@@ -4,6 +4,7 @@ import com.example.demo.domain.Course;
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.service.CourseCoverService;
 import com.example.demo.service.CourseService;
 import com.example.demo.service.LessonService;
 import com.example.demo.service.UserService;
@@ -32,6 +33,8 @@ public class CourseControllerTest {
     private UserService userService;
     @MockBean
     private LessonService lessonService;
+    @MockBean
+    private CourseCoverService courseCoverService;
     @Autowired
     MockMvc mockMvc;
 

@@ -22,7 +22,7 @@ public class UserAuthServiceTest {
         final User expectedUserDetails = new User(username, "password", new ArrayList<>());
         Mockito.when(userRepositoryMock.findUserByUsername("username"))
                 .thenReturn(Optional.of(new com.example.demo.domain.User(
-                        1L, username, "password", null, new HashSet<>())));
+                        1L, username, "password", null, new HashSet<>(), null)));
         Mockito.when(userRepositoryMock.findUserByUsername(Mockito.argThat(arg -> !arg.equals("username"))))
                 .thenReturn(Optional.empty());
 

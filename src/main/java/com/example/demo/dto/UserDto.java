@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.domain.AvatarImage;
 import com.example.demo.domain.Course;
 import com.example.demo.domain.Role;
 import lombok.*;
@@ -27,4 +28,6 @@ public class UserDto {
     private Set<Course> courses;
 
     private Set<Role> roles;
+
+    private AvatarImage avatarImage;
 }

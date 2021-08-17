@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.UserDto;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.UsernameExistException;
+import com.example.demo.service.AvatarStorageService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,8 @@ public class UserControllerTest {
     private UserService userService;
     @MockBean
     private RoleService roleService;
+    @MockBean
+    private AvatarStorageService avatarStorageService;
     @Autowired
     private MockMvc mockMvc;
 

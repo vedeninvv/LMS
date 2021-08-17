@@ -23,6 +23,11 @@
         </a>
     </div>
     <form class="float-right" sec:authorize="isAuthenticated()" th:method="post" th:action="@{/logout}">
+        <div>
+            <a th:href="@{/user}">
+                <img th:src="@{/user/avatar}" alt="User profile" width="96">
+            </a>
+        </div>
         <button>
             Logout <span sec:authentication="principal.username">Username</span>
         </button>
